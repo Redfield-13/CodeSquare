@@ -1,10 +1,11 @@
 import express, { RequestHandler } from 'express'
 
+import {db} from './datastore'
+
 
 const app = express();
 app.use(express.json())
 
-const posts :any[] = [];
 
 const loggerMidderlware : RequestHandler = (request,response, next) =>{
     console.log("Date : ",Date.now(),"New request : ", request.path, '---body :', request.body, '---Method : ', request.method);
@@ -16,13 +17,13 @@ app.use(loggerMidderlware)
 app.get("/posts" ,(request,response) => {
 
     console.log("Code Square Posts");    
-    response.send({posts})
+    response.send({posts : db.listPosts()})
 
 })
 
 app.post("/posts", (request,response) =>{
     const post = request.body
-    posts.push(post)
+    db.cratePost(post)
     response.sendStatus(200);
     
 })
