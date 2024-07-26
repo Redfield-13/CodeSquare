@@ -1,6 +1,5 @@
 import express, { RequestHandler } from 'express'
-
-import {db} from './datastore'
+import { createPostController, listPostsContoller } from './controllers/postController';
 
 
 const app = express();
@@ -14,18 +13,8 @@ const loggerMidderlware : RequestHandler = (request,response, next) =>{
 
 app.use(loggerMidderlware)
 
-app.get("/posts" ,(request,response) => {
+app.get("/posts" , listPostsContoller)
 
-    console.log("Code Square Posts");    
-    response.send({posts : db.listPosts()})
-
-})
-
-app.post("/posts", (request,response) =>{
-    const post = request.body
-    db.cratePost(post)
-    response.sendStatus(200);
-    
-})
+app.post("/posts", createPostController)
 
 app.listen(3000);
