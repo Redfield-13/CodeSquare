@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express'
+import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import { createPostController, listPostsContoller } from './controllers/postController';
 
 
@@ -11,10 +11,17 @@ const loggerMidderlware : RequestHandler = (request,response, next) =>{
     next();
 }
 
+const errorHandler : ErrorRequestHandler = (error, request, response, next) =>{
+    console.error("Uncaught exceptions", error)
+    response.status(500).send('Oops, error occuerd')
+}
+
 app.use(loggerMidderlware)
 
-app.get("/posts" , listPostsContoller)
+app.get("/v1/posts" , listPostsContoller)
 
-app.post("/posts", createPostController)
+app.post("/v1/posts", createPostController)
 
+
+app.use(errorHandler)
 app.listen(3000);

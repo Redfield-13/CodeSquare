@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import {db} from '../datastore'
 import { Post } from '../types';
-import { UnscopedEmitHelper } from 'typescript';
 import crypto from 'crypto'
+import { CreatePostRequest, CreatePostResponse } from '../api';
 
 
 export type ExpressHandler<Req, Res> = RequestHandler<
@@ -16,13 +16,13 @@ export const listPostsContoller: ExpressHandler <{},{}> = (request,response) => 
     response.send({posts : db.listPosts()})
 }
 
-type CreatePostRequest = Pick <Post, 'title' | 'url' | 'userId'>
-interface CreatePostResponse {
 
-}
 
 export const createPostController: ExpressHandler<CreatePostRequest,CreatePostResponse> = (request,response) =>{
     const body  = request.body
+    if(!request.body.title){
+        return response.status(400).send("Title field is requires but empty")
+    }
     if(!body || !body.url || !body.title){
         response.sendStatus(400)
     }
