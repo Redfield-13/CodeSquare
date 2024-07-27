@@ -1,7 +1,11 @@
 import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import { createPostController, listPostsContoller } from './controllers/postController';
+import asyncHandler from 'express-async-handler'
+import { initDb } from './datastore';
 
-
+(async ()=>{
+    await initDb();
+})()
 const app = express();
 app.use(express.json())
 
@@ -18,9 +22,9 @@ const errorHandler : ErrorRequestHandler = (error, request, response, next) =>{
 
 app.use(loggerMidderlware)
 
-app.get("/v1/posts" , listPostsContoller)
+app.get("/v1/posts" , (listPostsContoller))
 
-app.post("/v1/posts", createPostController)
+app.post("/v1/posts", (createPostController))
 
 
 app.use(errorHandler)

@@ -3,6 +3,8 @@ import {db} from '../datastore'
 import { Post } from '../types';
 import crypto from 'crypto'
 import { CreatePostRequest, CreatePostResponse } from '../api';
+import {Request, Response} from 'express'
+
 
 
 export type ExpressHandler<Req, Res> = RequestHandler<
@@ -12,14 +14,18 @@ Partial<Req>,
 any
 >;
 
-export const listPostsContoller: ExpressHandler <{},{}> = (request,response) => {
-    response.send({posts : db.listPosts()})
+export const listPostsContoller: ExpressHandler <{},{}> = async (request,response) => {
+    response.send({posts :await db.listPosts()})
 }
 
 
 
-export const createPostController: ExpressHandler<CreatePostRequest,CreatePostResponse> = (request,response) =>{
+export const createPostController: ExpressHandler<CreatePostRequest,CreatePostResponse> = async (request,response) =>{
     const body  = request.body
+    // TODO: Validate user exists
+    // TODO: Get user Id from session
+    // TODO: Validate title and url are non-empty
+    // TODO: Validate url is new, otherwise add +1 to exisitng post.
     if(!request.body.title){
         return response.status(400).send("Title field is requires but empty")
     }
@@ -34,6 +40,6 @@ export const createPostController: ExpressHandler<CreatePostRequest,CreatePostRe
         userId: body.userId as string
 
     }
-    db.cratePost(post)
+    await db.cratePost(post)
     response.sendStatus(200);    
 }
