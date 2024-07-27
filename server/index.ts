@@ -2,6 +2,7 @@ import express, { ErrorRequestHandler, RequestHandler } from 'express'
 import { createPostController, listPostsContoller } from './controllers/postController';
 import asyncHandler from 'express-async-handler'
 import { initDb } from './datastore';
+import { signUpController, signinController } from './controllers/userController';
 
 (async ()=>{
     await initDb();
@@ -26,6 +27,8 @@ app.get("/v1/posts" , (listPostsContoller))
 
 app.post("/v1/posts", (createPostController))
 
+app.post("/v1/signup", (signUpController))
+app.post("/v1/signin", (signinController))
 
 app.use(errorHandler)
 app.listen(3000);

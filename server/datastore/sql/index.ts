@@ -26,19 +26,18 @@ export class SqlDataStore implements DataStore {
         )
         return this;
     }
-    createUser(user: User): Promise<void> {
-        throw new Error("Method not implemented.");
+    async createUser(user: User): Promise<void> {
+        await this.db.run('INSERT INTO users (id, firstName, lastName, username, password, email) VALUES (?, ?, ?, ?, ?, ?)', user.id, user.firstName, user.lastName, user.username, user.password, user.email);
     }
-    getUserByEmail(email: string): Promise<User | undefined> {
-        throw new Error("Method not implemented.");
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        return await this.db.get<User | undefined>('SELECT * FROM users WHERE email = ?', email);
     }
-    getUserByUsername(username: string): Promise<User | undefined> {
-        throw new Error("Method not implemented.");
-    }
-    listPosts(): Promise<Post[]> {
+    async getUserByUsername(username: string): Promise<User | undefined> {
+        return await this.db.get<User | undefined>('SELECT * FROM users WHERE username = ?', username);    }
+    async listPosts(): Promise<Post[]> {
         console.log(this.db);
         
-        return this.db.all<Post[]>('SELECT * FROM posts');
+        return await this.db.all<Post[]>('SELECT * FROM posts');
     }
     async cratePost(post: Post): Promise<void> {
         await this.db.run('INSERT INTO posts (id, title, url, postedAt, userId) VALUES (?, ?, ?, ?, ?)', post.id, post.title, post.url, post.postedAt, post.userId);
