@@ -27,3 +27,11 @@ export interface Comment {
     comment:string;
     postedAt:string;
 }
+
+export interface JwtObject {
+    userId:string;
+    // username:string;
+    // email:string;
+    // iat:number;
+    // exp:number;
+}

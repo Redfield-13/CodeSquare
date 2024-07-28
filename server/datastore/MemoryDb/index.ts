@@ -2,6 +2,7 @@ import { User, Post, Comment, Like } from "../../types";
 import { DataStore } from "../index";
 
 export class InMemoryDataStore implements DataStore {
+    
     private users:User[] = [];
     private posts:Post[] = [];
     private comments:Comment[] = [];
@@ -56,6 +57,9 @@ export class InMemoryDataStore implements DataStore {
         this.likes.push(like);
         return Promise.resolve();
 
+    }
+    getUserById(id: string): Promise<User | undefined> {
+        return Promise.resolve(this.users.find((u) => u.id === id));
     }
 
 }

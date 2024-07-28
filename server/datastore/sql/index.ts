@@ -6,6 +6,7 @@ import { DataStore } from "..";
 import { User, Post, Comment, Like } from "../../types";
 
 export class SqlDataStore implements DataStore {
+    
 
     private db!: Database<sqlite3.Database, sqlite3.Statement>;
 
@@ -59,6 +60,10 @@ export class SqlDataStore implements DataStore {
     }
     createLike(like: Like): Promise<void> {
         throw new Error("Method not implemented.");
+    }
+
+    async getUserById(id: string): Promise<User | undefined> {
+        return await this.db.get<User | undefined>('SELECT * FROM users WHERE id = ?', id);
     }
     
 }

@@ -22,7 +22,8 @@ export interface GetPostResponse {
 // Users APIs
 export type SignUpRequest = Pick<User, 'firstName'|'lastName' | 'username' | 'password' | 'email'>
 export interface SignUpResponse {
-   
+   jwt: string,
+   message?: string
 }
 
 
@@ -30,4 +31,8 @@ export interface SignInRequest {
     login : string; 
     password : string;
 }
-export type SignInResponse = Pick<User, 'firstName'|'lastName' | 'username' | 'password' | 'email' | 'id'>
+export type SignInResponse ={
+    user:Pick<User, 'firstName'|'lastName' | 'username'  | 'email' | 'id'>,
+    jwt: string,
+    message?: string
+}
